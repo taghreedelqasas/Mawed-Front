@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../core/services/auth.service'; // ✅ تأكدي من المسار
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,7 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService, 
+    private authService: AuthService,
     private router: Router
   ) {
     this.loginForm = this.fb.group({
@@ -33,6 +33,18 @@ export class LoginComponent {
     return !!(control?.invalid && control?.touched);
   }
 
+  private redirectBasedOnRoles(roles: string[]): void {
+    if (roles.includes('Admin')) {
+      this.router.navigate(['/admin/dashboard']);
+    } else if (roles.includes('Doctor')) {
+      this.router.navigate(['/doctor/dashboard']);
+    } else if (roles.includes('Patient')) {
+      this.router.navigate(['/patient/dashboard']);
+    } else {
+      this.router.navigate(['/dashboard']);
+    }
+  }
+
   onSubmit(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
@@ -44,31 +56,25 @@ export class LoginComponent {
 
     const { email, password } = this.loginForm.value;
 
-    // ✅ استدعاء الـ API الحقيقي
     this.authService.login({ email, password }).subscribe({
       next: (response) => {
         this.isLoading = false;
-        console.log('✅ تم تسجيل الدخول بنجاح');
-        
-       
-        if (response.token) {
-          localStorage.setItem('token', response.token);
+        console.log(' Successfully login');
+
+        const roles = this.authService.getUserRoles();
+  
+        if (roles.length > 0) {
+          this.redirectBasedOnRoles(roles);
+        } else if (response.roles && response.roles.length > 0) {
+          this.redirectBasedOnRoles(response.roles);
+        } else {
+          this.router.navigate(['/dashboard']);
         }
-        
-       
-        if (response.userName) {
-          localStorage.setItem('user', JSON.stringify(response.userName));
-        }
-        
-        
-        this.router.navigate(['/dashboard']); 
       },
       error: (err) => {
         this.isLoading = false;
-        console.error('❌ خطأ في تسجيل الدخول:', err);
-        
-        // ✅ عرض رسالة الخطأ من الـ API
-        this.apiError = err.error?.message || 'بيانات الدخول غير صحيحة. حاول مرة أخرى.';
+        console.error('login fail',);
+        this.apiError = err.error?.message || ' login again';
       }
     });
   }
