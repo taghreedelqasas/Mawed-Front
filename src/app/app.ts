@@ -1,14 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from './components/navbar/navbar';
-import { Home } from './components/home/home';
-import { DocMain } from "./DoctorDashboard/doc-main/doc-main";
-import { DoctorDash } from "./DoctorDashboard/doctor-dash/doctor-dash";
+import { Footer } from './shared/footer/footer';
 
 @Component({
   selector: 'app-root',
-  // ضيفنا RouterOutlet هنا عشان الكومبوننت الرئيسي يعرض الصفحات
-  imports: [RouterOutlet, Home, DocMain, DoctorDash], 
+  imports: [RouterOutlet, Navbar, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
