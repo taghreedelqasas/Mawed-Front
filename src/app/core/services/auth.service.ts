@@ -40,6 +40,7 @@ export class AuthService {
   }
 
   forgotPassword(email: string, clientBaseUrl: string): Observable<any> {
+   // const clientBaseUrl = 'https://localhost:4200';
     return this.http.post(`${this.base}/forgot-password`, { email, clientBaseUrl });
   }
 
@@ -53,4 +54,20 @@ export class AuthService {
   isAdmin(): boolean               { return this.getUserRoles().includes('Admin');   }
   isDoctor(): boolean              { return this.getUserRoles().includes('Doctor');  }
   isPatient(): boolean             { return this.getUserRoles().includes('Patient'); }
+
+
+  //con firm email fun
+  confirmEmail(userId: string, token: string): Observable<AuthResponse> {
+  return this.http.get<AuthResponse>(`${this.base}/confirm-email?userId=${userId}&token=${token}`).pipe(
+    tap(res => {
+      if (res.isAuthenticated) {
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('userEmail', res.email);
+        localStorage.setItem('userRoles', JSON.stringify(res.roles));
+        localStorage.setItem('userId', res.userId);
+      }
+    })
+  );
 }
+}
+

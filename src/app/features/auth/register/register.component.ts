@@ -33,6 +33,7 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    
     this.registerForm = this.fb.group({
       fullName:        ['', [Validators.required, Validators.minLength(3)]],
       email:           ['', [Validators.required, Validators.email]],
@@ -54,44 +55,45 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.registerForm.invalid) {
-      this.registerForm.markAllAsTouched();
-      return;
-    }
+  if (this.registerForm.invalid) {
+    this.registerForm.markAllAsTouched();
+    return;
+  }
 
+  const { fullName, email, phone, birthDate, password, confirmPassword } = this.registerForm.value;
+  const nameParts = fullName.trim().split(' ');
+
+  const basicData = {
+    firstName:       nameParts[0],
+    lastName:        nameParts.slice(1).join(' ') || nameParts[0],
+    email,
+    userName:        email.split('@')[0],
+    phoneNumber:     phone,
+    birthDate,
+    ssn:             '00000000000000',
+    password,
+    confirmPassword,
+    role:            this.selectedRole,
+    clientBaseUrl:   'http://localhost:4200'
+  };
+
+  if (this.selectedRole === 'Doctor') {
+    // حفظ مؤقت وروح لصفحة المعلومات المهنية
+    localStorage.setItem('doctorBasicData', JSON.stringify(basicData));
+    this.router.navigate(['/auth/doctor-info']);
+  } else {
+    // Patient → بعت للـ API مباشرة
     this.isLoading = true;
-    this.apiError  = '';
-
-    const { fullName, email, phone, birthDate, password, confirmPassword } = this.registerForm.value;
-    const nameParts = fullName.trim().split(' ');
-
-    const payload = {
-      firstName:       nameParts[0],
-      lastName:        nameParts.slice(1).join(' ') || nameParts[0],
-      email,
-      userName:        email.split('@')[0],
-      phoneNumber:     phone,
-      birthDate,
-      ssn: this.selectedRole === 'Doctor' ? '' : '00000000000000',
-      password,
-      confirmPassword,
-      role:            this.selectedRole,
-      clientBaseUrl:   'https://localhost:7150'
-    };
-
-  this.authService.register(payload).subscribe({
-  next: (res) => {
-    this.isLoading = false;
-    this.router.navigate(['/auth/confirm-email-notice'], {
-      queryParams: { email }
-    });
-  },
-  error: (err) => {
-    this.isLoading = false;
-    this.router.navigate(['/auth/confirm-email-notice'], {
-      queryParams: { email }
+    this.authService.register(basicData).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.router.navigate(['/auth/confirm-email-notice'], { queryParams: { email } });
+      },
+      error: () => {
+        this.isLoading = false;
+        this.router.navigate(['/auth/confirm-email-notice'], { queryParams: { email } });
+      }
     });
   }
-});
-  }
+}
 }

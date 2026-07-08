@@ -1,0 +1,148 @@
+<div class="page-wrapper">
+
+  <!-- Form Panel -->
+  <div class="form-panel">
+    <div class="form-container">
+
+      <!-- Logo -->
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <rect x="4" y="4" width="14" height="14" rx="3" stroke="#6C3FC5" stroke-width="2.2"/>
+            <rect x="22" y="4" width="14" height="14" rx="3" stroke="#00C2CB" stroke-width="2.2"/>
+            <rect x="4" y="22" width="14" height="14" rx="3" stroke="#00C2CB" stroke-width="2.2"/>
+            <rect x="22" y="22" width="14" height="14" rx="3" stroke="#6C3FC5" stroke-width="2.2"/>
+            <line x1="11" y1="18" x2="11" y2="22" stroke="#6C3FC5" stroke-width="2.2"/>
+            <line x1="29" y1="18" x2="29" y2="22" stroke="#00C2CB" stroke-width="2.2"/>
+            <line x1="18" y1="11" x2="22" y2="11" stroke="#00C2CB" stroke-width="2.2"/>
+            <line x1="18" y1="29" x2="22" y2="29" stroke="#6C3FC5" stroke-width="2.2"/>
+          </svg>
+        </div>
+        <span class="logo-text">Maw<span class="logo-accent">3</span>ed</span>
+      </div>
+
+      <!-- Title -->
+      <h1 class="page-title">المعلومات المهنية</h1>
+
+      <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()" novalidate>
+
+        <!-- Specialization -->
+        <div class="field-group">
+          <label>التخصص<span class="req">*</span></label>
+          <div class="select-wrapper" [class.invalid]="isInvalid('specialization')">
+            <select formControlName="specialization">
+              <option value="" disabled selected>أختر تخصصك الرئيسي</option>
+              <option *ngFor="let spec of specializations" [value]="spec">{{ spec }}</option>
+            </select>
+            <span class="select-arrow">▾</span>
+          </div>
+          <span class="error-msg" *ngIf="isInvalid('specialization')">التخصص مطلوب</span>
+        </div>
+
+        <!-- Years Experience -->
+        <div class="field-group">
+          <label>سنوات الخبرة<span class="req">*</span></label>
+          <input formControlName="yearsExperience" type="number"
+            placeholder="عدد سنوات الخبرة"
+            [class.invalid]="isInvalid('yearsExperience')" />
+          <span class="error-msg" *ngIf="isInvalid('yearsExperience')">سنوات الخبرة مطلوبة</span>
+        </div>
+
+        <!-- Clinic Address -->
+        <div class="field-group">
+          <label>عنوان العيادة<span class="req">*</span></label>
+          <input formControlName="clinicAddress" type="text"
+            placeholder="أدخل عنوان العيادة"
+            [class.invalid]="isInvalid('clinicAddress')" />
+          <span class="error-msg" *ngIf="isInvalid('clinicAddress')">عنوان العيادة مطلوب</span>
+        </div>
+
+        <!-- Documents -->
+        <div class="docs-section">
+          <h3 class="docs-title">المستندات المطلوبة <span class="docs-title-accent">(Upload)</span></h3>
+
+          <!-- ID Card -->
+          <div class="doc-item" [class.uploaded]="idCardName">
+            <div class="doc-info">
+              <input type="checkbox" [checked]="!!idCardName" readonly />
+              <div class="doc-text">
+                <span class="doc-name">البطاقة الشخصية<span class="req">*</span></span>
+                <span class="doc-sub">{{ idCardName || 'صورة واضحة من الوجهين' }}</span>
+              </div>
+            </div>
+            <label class="upload-btn" for="idCardInput">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="#6C3FC5" stroke-width="2.5">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+            </label>
+            <input id="idCardInput" type="file" accept="image/*,.pdf"
+              (change)="onFileChange($event, 'idCard')" hidden />
+          </div>
+          <span class="error-msg" *ngIf="isInvalid('idCard')">البطاقة الشخصية مطلوبة</span>
+
+          <!-- License -->
+          <div class="doc-item" [class.uploaded]="licenseName">
+            <div class="doc-info">
+              <input type="checkbox" [checked]="!!licenseName" readonly />
+              <div class="doc-text">
+                <span class="doc-name">رخصة مزاولة المهنة<span class="req">*</span></span>
+                <span class="doc-sub">{{ licenseName || 'سارية المفعول' }}</span>
+              </div>
+            </div>
+            <label class="upload-btn" for="licenseInput">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="#6C3FC5" stroke-width="2.5">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+            </label>
+            <input id="licenseInput" type="file" accept="image/*,.pdf"
+              (change)="onFileChange($event, 'license')" hidden />
+          </div>
+          <span class="error-msg" *ngIf="isInvalid('license')">رخصة مزاولة المهنة مطلوبة</span>
+
+          <!-- Certificate -->
+          <div class="doc-item" [class.uploaded]="certificateName">
+            <div class="doc-info">
+              <input type="checkbox" [checked]="!!certificateName" readonly />
+              <div class="doc-text">
+                <span class="doc-name">شهادة المؤهل<span class="req">*</span></span>
+                <span class="doc-sub">{{ certificateName || 'شهادة البكالوريوس و الدراسات' }}</span>
+              </div>
+            </div>
+            <label class="upload-btn" for="certificateInput">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="#6C3FC5" stroke-width="2.5">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+            </label>
+            <input id="certificateInput" type="file" accept="image/*,.pdf"
+              (change)="onFileChange($event, 'certificate')" hidden />
+          </div>
+          <span class="error-msg" *ngIf="isInvalid('certificate')">شهادة المؤهل مطلوبة</span>
+        </div>
+
+        <!-- API Error -->
+        <div class="api-error" *ngIf="apiError">{{ apiError }}</div>
+
+        <!-- Submit -->
+        <button class="submit-btn" type="submit" [disabled]="isLoading">
+          <span *ngIf="!isLoading">متابعة</span>
+          <span *ngIf="isLoading" class="spinner"></span>
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Image Panel -->
+  <div class="image-panel"></div>
+
+</div>

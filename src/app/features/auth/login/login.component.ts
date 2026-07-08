@@ -34,16 +34,15 @@ export class LoginComponent {
   }
 
   private redirectBasedOnRoles(roles: string[]): void {
-    if (roles.includes('Admin')) {
+  if (roles.includes('Admin'))
       this.router.navigate(['/admin/dashboard']);
-    } else if (roles.includes('Doctor')) {
+  else if (roles.includes('Doctor'))
       this.router.navigate(['/doctor/dashboard']);
-    } else if (roles.includes('Patient')) {
-      this.router.navigate(['/patient/dashboard']);
-    } else {
-      this.router.navigate(['/dashboard']);
-    }
-  }
+  else if (roles.includes('Patient'))
+     this.router.navigate(['/patient/dashboard']);
+  else  
+     this.router.navigate(['/auth/login']);
+}
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
@@ -56,25 +55,16 @@ export class LoginComponent {
 
     const { email, password } = this.loginForm.value;
 
-    this.authService.login({ email, password }).subscribe({
-      next: (response) => {
-        this.isLoading = false;
-        console.log(' Successfully login');
-
-        const roles = this.authService.getUserRoles();
-  
-        if (roles.length > 0) {
-          this.redirectBasedOnRoles(roles);
-        } else if (response.roles && response.roles.length > 0) {
-          this.redirectBasedOnRoles(response.roles);
-        } else {
-          this.router.navigate(['/dashboard']);
-        }
-      },
+ this.authService.login({ email, password }).subscribe({
+    next: (res) => {
+      this.isLoading = false;
+      this.redirectBasedOnRoles(res.roles);
+      console.log('login success')
+    },
       error: (err) => {
-        this.isLoading = false;
-        console.error('login fail',);
-        this.apiError = err.error?.message || ' login again';
+       this.isLoading = false;
+  
+       this.apiError = err?.error?.[0] ?? 'something went wrong , try again';
       }
     });
   }
