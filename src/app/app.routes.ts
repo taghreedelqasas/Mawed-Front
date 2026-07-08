@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-// مسارات المريض والصفحات العامة (فرع sama)
+// مسارات المريض والصفحات العامة
 import { Home } from './components/home/home';
 import { Booking } from './components/booking/booking';
 import { Doctors } from './components/doctors/doctors';
@@ -8,11 +8,10 @@ import { PatientProfile } from './components/patient-profile/patient-profile';
 import { ConsultRequest } from './components/consult-request/consult-request';
 import { DoctorChat } from './components/doctor-chat/doctor-chat';
 
-<<<<<<< HEAD
-// مسارات لوحة تحكم الطبيب (فرع develop)
+// Doctor dashboard components
 import { DoctorDash } from './DoctorDashboard/doctor-dash/doctor-dash';
 import { DocMain } from './DoctorDashboard/doc-main/doc-main';
-import { DocSlots from './DoctorDashboard/doc-slots/doc-slots';
+import { DocSlots } from './DoctorDashboard/doc-slots/doc-slots';
 import { DocPatients } from './DoctorDashboard/doc-patients/doc-patients';
 import { DocConsultations } from './DoctorDashboard/doc-consulations/doc-consulations';
 import { DocAnalytics } from './DoctorDashboard/doc-analytics/doc-analytics';
@@ -31,11 +30,11 @@ export const routes: Routes = [
   { path: 'chat', component: DoctorChat },
 
   // مسار لوحة تحكم الطبيب بمساراتها الفرعية
-  { 
-    path: 'doctor-dashboard', 
+  {
+    path: 'doctor-dashboard',
     component: DoctorDash,
     children: [
-      { path: '', redirectTo: 'main', pathMatch: 'full' }, 
+      { path: '', redirectTo: 'main', pathMatch: 'full' },
       { path: 'main', component: DocMain },
       { path: 'docSlots', component: DocSlots },
       { path: 'patients', component: DocPatients },
@@ -45,14 +44,12 @@ export const routes: Routes = [
       { path: 'profile', component: DocProfile },
       { path: 'settings', component: DocSettings }
     ]
-  }
-];
-=======
-export const routes: Routes = [
+  },
+
+  // Admin routes (lazy-loaded)
   {
     path: 'admin/dashboard',
-    loadComponent: () =>
-      import('./dashboard/dashboard.component').then(m => m.AdminDashboardComponent),
+    loadComponent: () => import('./dashboard/dashboard.component').then(m => m.AdminDashboardComponent),
   },
   {
     path: 'admin/patients',
@@ -63,4 +60,3 @@ export const routes: Routes = [
     loadComponent: () => import('./components/features/doctors-management/doctors-management.component').then(m => m.DoctorsManagementComponent),
   }
 ];
->>>>>>> origin/merna
