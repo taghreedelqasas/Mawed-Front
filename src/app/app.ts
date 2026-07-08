@@ -13,7 +13,7 @@ import { Footer } from './shared/footer/footer';
 })
 export class App {
   protected readonly title = signal('Maw3ed');
-  showChrome = true; // بيتحكم في ظهور الـ Navbar والـ Footer مع بعض
+  showChrome = true;
 
   constructor(private router: Router) {
     this.router.events

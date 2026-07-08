@@ -70,13 +70,16 @@ newMessageText = signal<string>('');
     this.getDoctorConversations(); 
   }
 
-  getDoctorAppointments(): void {
-    this.http.get<ServiceResult<AppointmentApi[]>>(`${BASE}/api/Appointments/doctor/my`).subscribe({
-      next: (res) => this.appointments.set(res.data),
-      error: (err) => console.error('Error fetching appointments:', err),
-      complete: () => this.loading.set(false)
-    });
-  }
+ getDoctorAppointments(): void {
+  this.http.get<ServiceResult<AppointmentApi[]>>(`${BASE}/api/Appointments/doctor/my`).subscribe({
+    next: (res) => this.appointments.set(res.data ?? []),
+    error: (err) => {
+      console.error('Error fetching appointments:', err);
+      this.appointments.set([]);
+    },
+    complete: () => this.loading.set(false)
+  });
+}
 
   getAvailableSlots(doctorId: number): void {
     this.http.get<ServiceResult<AvailableSlotApi[]>>(`${BASE}/api/DoctorAvailability/doctor/${doctorId}/available`).subscribe({
@@ -149,13 +152,15 @@ newMessageText = signal<string>('');
   // ============================================================
   reviews = signal<ReviewApi[]>([]);
 
-  getMyReviews(): void {
-    this.http.get<ServiceResult<ReviewApi[]>>(`${BASE}/api/Reviews/my`).subscribe({
-      next: (res) => this.reviews.set(res.data),
-      error: (err) => console.error('Error fetching reviews:', err)
-    });
-  }
-
+ getMyReviews(): void {
+  this.http.get<ServiceResult<ReviewApi[]>>(`https://mawed.runasp.net/api/Reviews/my`).subscribe({
+    next: (res) => this.reviews.set(res.data ?? []),
+    error: (err) => {
+      console.error('Error fetching reviews:', err);
+      this.reviews.set([]);
+    }
+  });
+}
   averageRating = computed(() => {
     const list = this.reviews();
     if (list.length === 0) return '0.0';
@@ -169,20 +174,25 @@ newMessageText = signal<string>('');
   wallet = signal<WalletResponse | null>(null);
   walletTransactions = signal<WalletTransactionApi[]>([]);
 
-  getWallet(): void {
-    this.http.get<ServiceResult<WalletResponse>>(`${BASE}/api/wallet`).subscribe({
-      next: (res) => this.wallet.set(res.data),
-      error: (err) => console.error('Error fetching wallet:', err)
-    });
-  }
+getWallet(): void {
+  this.http.get<ServiceResult<WalletResponse>>(`https://mawed.runasp.net/api/wallet`).subscribe({
+    next: (res) => this.wallet.set(res.data ?? null),
+    error: (err) => {
+      console.error('Error fetching wallet:', err);
+      this.wallet.set(null);
+    }
+  });
+}
 
-  getWalletTransactions(): void {
-    this.http.get<ServiceResult<WalletTransactionApi[]>>(`${BASE}/api/wallet/transactions`).subscribe({
-      next: (res) => this.walletTransactions.set(res.data),
-      error: (err) => console.error('Error fetching transactions:', err)
-    });
-  }
-
+ getWalletTransactions(): void {
+  this.http.get<ServiceResult<WalletTransactionApi[]>>(`${BASE}/api/wallet/transactions`).subscribe({
+    next: (res) => this.walletTransactions.set(res.data ?? []),
+    error: (err) => {
+      console.error('Error fetching transactions:', err);
+      this.walletTransactions.set([]);
+    }
+  });
+}
   sendWithdrawRequest(payload: WithdrawRequestPayload) {
     return this.http.post<ServiceResult<null>>(`${BASE}/api/wallet/withdraw`, payload);
   }
@@ -214,8 +224,11 @@ newMessageText = signal<string>('');
 
 getDoctorConversations(): void {
   this.http.get<ServiceResult<ConversationApi[]>>(`${BASE}/api/Conversation/doctor-conversations`).subscribe({
-    next: (res) => this.conversations.set(res.data),
-    error: (err) => console.error('Error fetching conversations:', err)
+    next: (res) => this.conversations.set(res.data ?? []),
+    error: (err) => {
+      console.error('Error fetching conversations:', err);
+      this.conversations.set([]);
+    }
   });
 }
 

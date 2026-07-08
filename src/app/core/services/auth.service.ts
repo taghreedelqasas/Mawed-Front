@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AuthResponse, LoginPayload, RegisterPayload } from '../models/auth.models';
@@ -8,8 +9,13 @@ import { AuthResponse, LoginPayload, RegisterPayload } from '../models/auth.mode
 export class AuthService {
 
   private readonly base = 'https://mawed.runasp.net/api/auth';
+  private http = inject(HttpClient);
+  private platformId = inject(PLATFORM_ID);
 
-  constructor(private http: HttpClient) {}
+  // دالة مساعدة للتحقق من البيئة الحالية قبل التعامل مع localStorage
+  private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
 
   register(payload: RegisterPayload): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.base}/register`, payload);
@@ -18,7 +24,7 @@ export class AuthService {
   login(payload: LoginPayload): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.base}/login`, payload).pipe(
       tap(res => {
-        if (res.isAuthenticated) {
+        if (res.isAuthenticated && this.isBrowser()) {
           localStorage.setItem('token',     res.token);
           localStorage.setItem('userEmail', res.email);
           localStorage.setItem('userRoles', JSON.stringify(res.roles));
@@ -31,10 +37,12 @@ export class AuthService {
   logout(): Observable<any> {
     return this.http.post(`${this.base}/logout`, {}).pipe(
       tap(() => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userEmail');
-        localStorage.removeItem('userRoles');
-        localStorage.removeItem('userId');
+        if (this.isBrowser()) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('userEmail');
+          localStorage.removeItem('userRoles');
+          localStorage.removeItem('userId');
+        }
       })
     );
   }
@@ -47,9 +55,25 @@ export class AuthService {
     return this.http.post(`${this.base}/reset-password`, { userId, token, newPassword, confirmPassword });
   }
 
-  getToken(): string | null        { return localStorage.getItem('token'); }
-  isLoggedIn(): boolean            { return !!this.getToken(); }
-  getUserRoles(): string[]         { const r = localStorage.getItem('userRoles'); return r ? JSON.parse(r) : []; }
+  getToken(): string | null { 
+    if (this.isBrowser()) {
+      return localStorage.getItem('token'); 
+    }
+    return null;
+  }
+
+  isLoggedIn(): boolean { 
+    return !!this.getToken(); 
+  }
+
+  getUserRoles(): string[] { 
+    if (this.isBrowser()) {
+      const r = localStorage.getItem('userRoles'); 
+      return r ? JSON.parse(r) : []; 
+    }
+    return [];
+  }
+
   isAdmin(): boolean               { return this.getUserRoles().includes('Admin');   }
   isDoctor(): boolean              { return this.getUserRoles().includes('Doctor');  }
   isPatient(): boolean             { return this.getUserRoles().includes('Patient'); }

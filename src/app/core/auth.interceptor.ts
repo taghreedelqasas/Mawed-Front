@@ -1,20 +1,27 @@
-// core/auth.interceptor.ts
-
 import { HttpInterceptorFn } from '@angular/common/http';
+import { inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
-// ده اسم الـ "خانة" في localStorage اللي التوكن هيتخزن جواها، مش التوكن نفسه
-const TOKEN_KEY = 'token';
+const TOKEN_KEY = 'token'; 
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem(TOKEN_KEY);
+  const platformId = inject(PLATFORM_ID);
 
-  if (!token) {
-    return next(req);
+  // 1. نتحقق أولاً هل الكود يعمل في المتصفح أم على السيرفر؟
+  if (isPlatformBrowser(platformId)) {
+    const token = localStorage.getItem(TOKEN_KEY);
+
+    // 2. إذا وجدنا التوكن، نقوم بعمل clone للطلب ونضيف الهيدر
+    if (token) {
+      const cloned = req.clone({
+        setHeaders: { 
+          Authorization: `Bearer ${token}` 
+        },
+      });
+      return next(cloned);
+    }
   }
 
-  const cloned = req.clone({
-    setHeaders: { Authorization: `Bearer ${token}` },
-  });
-
-  return next(cloned);
+  // 3. إذا كنا على السيرفر، أو لم يكن هناك توكن في المتصفح، يمر الطلب كما هو
+  return next(req);
 };

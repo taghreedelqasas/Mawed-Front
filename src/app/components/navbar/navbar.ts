@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service'; // ظبطي المسار حسب مكان الملف عندك
 
 @Component({
   selector: 'app-navbar',
@@ -11,20 +12,18 @@ export class Navbar {
 
   isMenuOpen = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, public authService: AuthService) {}
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
   scrollToSection(sectionId: string) {
-    this.isMenuOpen = false; // يقفل الـ mobile menu لو مفتوح
+    this.isMenuOpen = false;
 
     if (this.router.url === '/') {
-      // إحنا أصلاً في الـ Home، نعمل scroll على طول
       this.scrollNow(sectionId);
     } else {
-      // في صفحة تانية، لازم نروح الـ Home الأول وبعدين نعمل scroll
       this.router.navigate(['/']).then(() => {
         setTimeout(() => this.scrollNow(sectionId), 150);
       });
@@ -37,4 +36,20 @@ export class Navbar {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
+
+onLogout(): void {
+  this.isMenuOpen = false;
+  this.authService.logout().subscribe({
+    next: () => this.finishLogout(),
+    error: () => this.finishLogout(), // حتى لو فشل الـ API، امسحي محليًا وطلعي على طول
+  });
+}
+
+private finishLogout(): void {
+  localStorage.removeItem('token');
+  localStorage.removeItem('userEmail');
+  localStorage.removeItem('userRoles');
+  localStorage.removeItem('userId');
+  this.router.navigate(['/']);
+}
 }
