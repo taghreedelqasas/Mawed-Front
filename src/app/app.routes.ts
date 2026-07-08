@@ -18,11 +18,13 @@ import { DocAnalytics } from './DoctorDashboard/doc-analytics/doc-analytics';
 import { DocPayments } from './DoctorDashboard/doc-payments/doc-payments';
 import { DocProfile } from './DoctorDashboard/doc-profile/doc-profile';
 import { DocSettings } from './DoctorDashboard/doc-settings/doc-settings';
+import { authGuard } from './core/services/auth.guard';
 
 export const routes: Routes = [
   // مسارات المريض والصفحات العامة
   { path: '', component: Home },
-  { path: 'doctors', component: Doctors },
+  // { path: 'doctors', component: Doctors , canActivate: [authGuard] },
+  { path: 'doctors', component: Doctors  },
   { path: 'doctor/:id', component: DoctorProfile },
   { path: 'booking', component: Booking },
   { path: 'profile', component: PatientProfile },

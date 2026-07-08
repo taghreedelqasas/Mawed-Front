@@ -1,11 +1,12 @@
-<section class="max-w-4xl mx-auto text-center py-16 px-6">
+<div class="container  bg-[#F3F4F5A3]">
+<section class=" mx-auto text-center   w-[80%]   py-8    px-6">
   <span class="inline-block bg-purple-100 text-purple-700 px-4 py-1.5 rounded-full text-sm mb-4">
     الأسئلة الشائعة
   </span>
   <h2 class="text-3xl font-extrabold text-slate-900 mb-2">كل ما تريد معرفته عن موعد</h2>
   <p class="text-slate-500 mb-10">لم تجد إجابة؟ تواصل معنا على مدار الساعة</p>
 
-  <div class="grid md:grid-cols-2 gap-3 text-right">
+  <div class="grid md:grid-cols-2 gap-2 text-right ">
     <div
       *ngFor="let faq of faqs(); let i = index"
       class="bg-white rounded-xl border overflow-hidden transition-colors"
@@ -35,3 +36,5 @@
     </div>
   </div>
 </section>
+
+</div>

@@ -2,56 +2,91 @@
 <div class=" md:w-[80%]   mx-auto p-6 bg-white    shadow-lg  rounded-lg text-right rtl">
   <h2 class="text-center text-[#44116D] text-[29px] font-bold mb-6">ابحث عن طبيبك <span><i class="fas fa-search text-[#6CEAEA]"></i></span></h2>
 
-  <form>
-        <div  class="flex  mb-3">
-  <div class="mb-2  md:w-1/3 px-2 ">
-      <label for="specialty" class="block mb-2 font-semibold text-gray-700">التخصص</label>
-      <select id="specialty"  name="specialty"
-        class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
-        <option value="">اختر التخصص</option>
-      </select>
-    </div>
+   <section class="  pt-14 pb-16 px-6">
+<!-- 
+    <div class="max-w-4xl mx-auto text-center mb-10">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-[#3a1560] mb-3">{{ pageTitle }}</h1>
+      <p class="text-slate-500 text-lg">{{ pageSubtitle }}</p>
+    </div> -->
 
-    <div class="mb-2  md:w-1/3 px-2">
-      <label for="location" class="block mb-2 font-semibold text-gray-700">الموقع</label>
-      <input id="location" type="text"  name="location" placeholder="ادخل المحافظة"
-        class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" />
-    </div>
+    <div class="max-w-5xl mx-auto bg-white ">
 
-    <div class="mb-2  md:w-1/3 px-2">
-      <label for="date" class="block mb-2 font-semibold text-gray-700">التاريخ</label>
-      <input id="date" type="date"  name="date" placeholder="يوم / شهر / سنة"
-        class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" />
-    </div>
+      <!-- <h2 class="flex items-center justify-center gap-2 text-xl font-extrabold text-[#3a1560] mb-8">
+        ابحث عن طبيبك
+        <svg class="w-5 h-5 text-[#3a1560]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
+        </svg>
+      </h2> -->
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+
+        <!-- التخصص -->
+        <div>
+          <label class="block text-sm font-bold text-slate-600 mb-2">التخصص</label>
+          <select
+            [(ngModel)]="selectedSpecialty"
+            class="w-full border border-slate-200 rounded-xl px-3 py-2 text-slate-500 bg-white focus:outline-none focus:border-cyan-400 appearance-none"
+          >
+            <option value="">أختر التخصص</option>
+            <option *ngFor="let s of specialties" [value]="s">{{ s }}</option>
+          </select>
         </div>
-     <div class="flex  mb-2  items-center ">
-    <div class="mb-2  md:w-5/6  px-2  ">
-      <label for="doctorName" class="block mb-2 font-semibold text-gray-700">اسم الطبيب أو العيادة</label>
-      <input id="doctorName" type="text"  name="doctorName"  placeholder="ادخل اسم الطبيب أو العيادة"
-        class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" />
-    </div>
-      <div  class="md:w-1/6  mt-3  flex items-center justify-items-center-safe ">
-           <button type="button"  
-      class="w-full      py-2  btn bg-[#23E0E0] text-[#44116D] font-bold  rounded-full hover:bg-blue-700 transition">
-      ابحث الآن
-    </button>
+
+        <!-- الموقع -->
+        <div>
+          <label class="block text-sm font-bold text-slate-600 mb-2">الموقع</label>
+          <input
+            type="text"
+            [(ngModel)]="selectedLocation"
+            placeholder="أدخل المحافظة"
+            class="w-full border border-slate-200 rounded-xl px-3 py-2 text-slate-500 placeholder:text-slate-400 focus:outline-none focus:border-cyan-400"
+          />
+        </div>
+
+        <!-- التاريخ -->
+        <div>
+          <label class="block text-sm font-bold text-slate-600 mb-2">التاريخ</label>
+          <div class="relative">
+            <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <input
+              type="text"
+              [(ngModel)]="selectedDate"
+              placeholder="يوم / شهر / سنة"
+              class="w-full border border-slate-200 rounded-xl pr-11 pl-4 py-3 text-slate-500 placeholder:text-slate-400 focus:outline-none focus:border-cyan-400"
+            />
+          </div>
+        </div>
       </div>
 
+      <!-- إسم الطبيب أو العيادة -->
+      <div class="mb-6">
+        <label class="block text-sm font-bold text-slate-600 mb-2">إسم الطبيب أو العيادة</label>
+        <div class="flex gap-3">
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            placeholder="ابحث بإسم الطبيب أو إسم العيادة"
+            class="flex-1 border border-slate-200 rounded-xl px-3 py-2 text-slate-500 placeholder:text-slate-400 focus:outline-none focus:border-cyan-400"
+          />
+          <button
+            (click)="onSearch()"
+            class="bg-[#23E0E0] hover:bg-cyan-500 transition-colors text-[#53098D] font-bold px-5 rounded-xl whitespace-nowrap"
+          >
+            ابحث الآن
+          </button>
+        </div>
+      </div>
 
- 
-     </div>
-      
+      <!-- Divider -->
+      <div class="relative flex items-center justify-center mt-2">
+        <div class="w-full h-px bg-slate-200"></div>
+        <span class="absolute bg-white px-4 text-slate-400 text-sm">أو</span>
+      </div>
+    </div>
+  </section>
 
-
-  
-
-
-  </form>
-  <div class="flex">
-    <hr class="flex-grow border-t border-gray-300 my-4" />
-    <span class="mx-2 text-gray-500">أو</span>
-    <hr class="flex-grow border-t border-gray-300 my-4" />
-  </div>
    <div class="aiContain  py-7 flex justify-between  rounded-lg bg-linear-to-l  from-[#E9FCFC] to-[#ECE7F0]  px-5">
           <div class="flex     w-1/2 ">
             <div  class="px-3" >

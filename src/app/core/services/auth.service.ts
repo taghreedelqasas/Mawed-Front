@@ -7,7 +7,7 @@ import { AuthResponse, LoginPayload, RegisterPayload } from '../models/auth.mode
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private readonly base = 'https://localhost:7150/api/auth';
+  private readonly base = 'https://mawed.runasp.net/api/auth';
 
   constructor(private http: HttpClient) {}
 

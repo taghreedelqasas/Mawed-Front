@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DoctorService } from '../../core/services/doctor.service';
 import { Doctor as ApiDoctor } from '../../core/models/doctor.model';
+
+
 
 interface Doctor {
   id: number;
@@ -30,7 +32,11 @@ const FALLBACK_IMAGE =
   styleUrl: './doctors.css',
 })
 export class Doctors implements OnInit {
-  constructor(private router: Router, private doctorService: DoctorService) {}
+constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private doctorService: DoctorService
+  ) {}
 
   pageTitle = 'الأطباء';
   pageSubtitle = 'ابحث عن طبيبك المناسب من بين أكثر من 200 متخصص';
@@ -72,9 +78,14 @@ export class Doctors implements OnInit {
   currentPage = 1;
 
   ngOnInit(): void {
+    const params = this.route.snapshot.queryParams;
+    this.searchQuery = params['search'] || '';
+    this.selectedSpecialty = params['specialty'] || '';
+    this.selectedLocation = params['location'] || '';
+    this.selectedDate = params['date'] || '';
+
     this.fetchDoctors();
   }
-
   private mapDoctor(d: ApiDoctor): Doctor {
     const name =
       d.name ||

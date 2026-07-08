@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 interface FeatureCard {
   icon: string;
@@ -9,8 +10,8 @@ interface FeatureCard {
 
 @Component({
   selector: 'app-for-doctors',
-  standalone: true,
-  imports: [CommonModule],
+  standalone: true , 
+  imports: [CommonModule,RouterLink],
   templateUrl: './for-doctors.component.html',
   styleUrls: ['./for-doctors.component.css']
 })

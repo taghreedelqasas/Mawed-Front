@@ -25,35 +25,52 @@
     </div>
 
     <!-- Doctor Card -->
-    <div
-      *ngFor="let doc of doctors"
-      class="relative z-10 w-[180px] overflow-hidden rounded-3xl bg-white shadow-[0_15px_40px_rgba(68,17,109,0.12)] transition duration-300 hover:-translate-y-2"
-      [ngClass]="doc.raised ? '-mt-16' : 'mt-8'">
+<div
+  *ngFor="let doc of doctors; let i = index"
+  class="relative z-10 w-[180px] overflow-hidden rounded-xl
+         bg-white border border-gray-100
+         shadow-[0_15px_40px_rgba(68,17,109,0.12)]
+         transition-all duration-300 hover:-translate-y-2"
+  [ngClass]="{
+    '-mr-8 rotate-[-6deg]': i === 0,
+    '-mr-8 rotate-[-3deg]': i === 1,
+    '-mr-8 rotate-0': i === 2,
+    '-mr-8 rotate-[3deg]': i === 3,
+    'rotate-[6deg]': i === 4,
+    '-mt-10': doc.raised,
+    'mt-6': !doc.raised
+  }">
 
-      <!-- Image -->
-      <img
-        [src]="doc.photo"
-        [alt]="doc.name"
-        class="w-full h-[235px] object-cover">
+  <!-- Image -->
+  <img
+    [src]="doc.photo"
+    [alt]="doc.name"
+    class="w-full h-[230px] object-cover">
 
-      <!-- Info -->
-      <div class="bg-[#44116D] text-white px-4 py-4">
+  <!-- Footer -->
+  <div class="bg-[#6F3FA2] px-3 py-2 text-center">
 
-        <h3 class="font-bold text-lg mb-1">
-          {{ doc.name }}
-        </h3>
+    <h3 class="text-white text-[15px] font-bold leading-5">
+      {{doc.name}}
+    </h3>
 
-        <p class="text-[#E8D8F2] text-sm leading-6 min-h-[45px]">
-          {{ doc.specialty }}
-        </p>
+    <p class="text-[11px] text-[#E7DDF2] mt-1">
+      {{doc.specialty}}
+    </p>
 
-        <div class="mt-3 text-[#FFB400] text-sm font-semibold">
-          ★★★★★ ({{ doc.rating }})
-        </div>
+    <div class="flex justify-end items-center gap-1 mt-2">
+      <span class="text-[11px] text-white">
+        ({{doc.rating}})
+      </span>
 
-      </div>
-
+      <span class="text-[#FFC107] text-[11px]">
+        ★★★★★
+      </span>
     </div>
+
+  </div>
+
+</div>
 
   </div>
 

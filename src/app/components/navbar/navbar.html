@@ -10,7 +10,8 @@
         
       <nav class="hidden md:flex items-center space-x-reverse space-x-4 lg:space-x-4 mx-auto">
   
-  <a routerLink="/home" 
+  <a routerLink="/" 
+   [routerLinkActiveOptions]="{exact: true}"
      routerLinkActive="text-[#53098D] bg-[#F3E8FF] font-semibold" 
      class="text-[#333333] hover:text-[#53098D] hover:bg-purple-50 font-medium px-2 py-1.5 rounded-lg text-base transition-all duration-200">
      الرئيسية
@@ -28,17 +29,13 @@
      نبض AI
   </a>
      
-  <a routerLink="/about" 
-     routerLinkActive="text-[#53098D] bg-[#F3E8FF] font-semibold" 
-     class="text-[#333333] hover:text-[#53098D] hover:bg-purple-50 font-medium px-3 py-1.5 rounded-lg text-base transition-all duration-200">
-     من نحن
-  </a>
+ <a (click)="scrollToSection('about-section')" class="text-[#333333] hover:text-[#53098D] hover:bg-purple-50 font-medium px-3 py-1.5 rounded-lg text-base transition-all duration-200 cursor-pointer">
+   من نحن
+</a>
      
-  <a routerLink="/contact" 
-     routerLinkActive="text-[#53098D] bg-[#F3E8FF] font-semibold" 
-     class="text-[#333333] hover:text-[#53098D] hover:bg-purple-50 font-medium px-3 py-1.5 rounded-lg text-base transition-all duration-200">
-     تواصل معنا
-  </a>
+<a (click)="scrollToSection('contact-section')" class="text-[#333333] hover:text-[#53098D] hover:bg-purple-50 font-medium px-3 py-1.5 rounded-lg text-base transition-all duration-200 cursor-pointer">
+   تواصل معنا
+</a>
 
 </nav>
 
@@ -46,11 +43,11 @@
      
           
           
-          <a href="#" class="bg-[#00E5E5] text-[#53098D] px-4  mx-2  py-2 rounded-full text-base font-semibold hover:bg-[#00c2c2] transition-colors shadow-sm">
+          <a routerLink="/auth/login" class="bg-[#00E5E5] text-[#53098D] px-4  mx-2  py-2 rounded-full text-base font-semibold hover:bg-[#00c2c2] transition-colors shadow-sm">
             سجل دخول
           </a>
 
-             <a href="#" class="relative p-[2px] rounded-full bg-gradient-to-r from-[#6CEAEA] to-[#53098D] inline-block hover:opacity-90 transition-opacity">
+             <a routerLink="/auth/register" class="relative p-[2px] rounded-full bg-gradient-to-r from-[#6CEAEA] to-[#53098D] inline-block hover:opacity-90 transition-opacity">
             <span class="block bg-white text-[#53098D] px-4   py-2 rounded-full text-base font-semibold">
               إنشاء حساب
             </span>

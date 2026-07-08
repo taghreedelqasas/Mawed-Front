@@ -3,7 +3,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 // ده اسم الـ "خانة" في localStorage اللي التوكن هيتخزن جواها، مش التوكن نفسه
-const TOKEN_KEY = 'access_token';
+const TOKEN_KEY = 'token';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem(TOKEN_KEY);
