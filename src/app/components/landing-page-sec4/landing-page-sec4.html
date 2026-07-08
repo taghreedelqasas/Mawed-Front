@@ -1,0 +1,66 @@
+<section dir="rtl" class="max-w-6xl mx-auto px-6 py-16 text-center font-[Cairo]">
+
+  <!-- Badge -->
+  <span
+    class="inline-block bg-gradient-to-r from-[#F3EAF8] to-[#E6FBFB] text-[#44116D] text-xs font-semibold px-5 py-2 rounded-full mb-5">
+    أطباؤنا المميزون
+  </span>
+
+  <!-- Title -->
+  <h2 class="text-4xl font-extrabold text-[#44116D] mb-3">
+    نخبة من أفضل الأطباء المتخصصين
+  </h2>
+
+  <!-- Subtitle -->
+  <p class="text-[#829196] text-lg mb-16">
+    أكثر من ٥٠٠ طبيب موثق في جميع التخصصات الطبية
+  </p>
+
+  <!-- Doctors -->
+  <div class="relative flex justify-center items-end gap-6 mb-16">
+
+    <!-- Dashed line -->
+    <div
+      class="absolute left-0 right-0 top-[48%] border-t-2 border-dashed border-[#B9D8EA] z-0">
+    </div>
+
+    <!-- Doctor Card -->
+    <div
+      *ngFor="let doc of doctors"
+      class="relative z-10 w-[180px] overflow-hidden rounded-3xl bg-white shadow-[0_15px_40px_rgba(68,17,109,0.12)] transition duration-300 hover:-translate-y-2"
+      [ngClass]="doc.raised ? '-mt-16' : 'mt-8'">
+
+      <!-- Image -->
+      <img
+        [src]="doc.photo"
+        [alt]="doc.name"
+        class="w-full h-[235px] object-cover">
+
+      <!-- Info -->
+      <div class="bg-[#44116D] text-white px-4 py-4">
+
+        <h3 class="font-bold text-lg mb-1">
+          {{ doc.name }}
+        </h3>
+
+        <p class="text-[#E8D8F2] text-sm leading-6 min-h-[45px]">
+          {{ doc.specialty }}
+        </p>
+
+        <div class="mt-3 text-[#FFB400] text-sm font-semibold">
+          ★★★★★ ({{ doc.rating }})
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Button -->
+  <button
+    class="border-2 border-[#44116D] text-[#44116D] rounded-full px-12 py-3 font-bold text-lg hover:bg-[#44116D] hover:text-white transition">
+    جرب نبض AI
+  </button>
+
+</section>

@@ -8,6 +8,7 @@ import { PatientProfile } from './components/patient-profile/patient-profile';
 import { ConsultRequest } from './components/consult-request/consult-request';
 import { DoctorChat } from './components/doctor-chat/doctor-chat';
 
+<<<<<<< HEAD
 // مسارات لوحة تحكم الطبيب (فرع develop)
 import { DoctorDash } from './DoctorDashboard/doctor-dash/doctor-dash';
 import { DocMain } from './DoctorDashboard/doc-main/doc-main';
@@ -46,3 +47,20 @@ export const routes: Routes = [
     ]
   }
 ];
+=======
+export const routes: Routes = [
+  {
+    path: 'admin/dashboard',
+    loadComponent: () =>
+      import('./dashboard/dashboard.component').then(m => m.AdminDashboardComponent),
+  },
+  {
+    path: 'admin/patients',
+    loadComponent: () => import('./components/features/patients-management/patients-management.component').then(m => m.PatientsManagementComponent),
+  },
+  {
+    path: 'admin/doctors',
+    loadComponent: () => import('./components/features/doctors-management/doctors-management.component').then(m => m.DoctorsManagementComponent),
+  }
+];
+>>>>>>> origin/merna
