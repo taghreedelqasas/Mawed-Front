@@ -7,7 +7,7 @@ import { DoctorProfile } from './components/doctor-profile/doctor-profile';
 import { PatientProfile } from './components/patient-profile/patient-profile';
 import { ConsultRequest } from './components/consult-request/consult-request';
 import { DoctorChat } from './components/doctor-chat/doctor-chat';
-
+import { LoginComponent } from './features/auth/login/login.component';
 // Doctor dashboard components
 import { DoctorDash } from './DoctorDashboard/doctor-dash/doctor-dash';
 import { DocMain } from './DoctorDashboard/doc-main/doc-main';
@@ -58,5 +58,24 @@ export const routes: Routes = [
   {
     path: 'admin/doctors',
     loadComponent: () => import('./components/features/doctors-management/doctors-management.component').then(m => m.DoctorsManagementComponent),
+  } ,
+   {path: 'auth/login',
+  component: LoginComponent},
+  {
+    path: '',
+    redirectTo: 'auth/register',
+    pathMatch: 'full'
+  },
+  {
+    path: 'auth/register',
+    loadComponent: () =>
+      import('./features/auth/register/register.component')
+        .then(m => m.RegisterComponent)
+  },
+  {
+    path: 'auth/confirm-email-notice',
+    loadComponent: () =>
+      import('./features/auth/confirm-email-notice/confirm-email-notice.component')
+        .then(m => m.ConfirmEmailNoticeComponent)
   }
 ];

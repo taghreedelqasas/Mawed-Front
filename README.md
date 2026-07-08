@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 # Maw3ed
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.17.
+=======
+# MawedFront
+
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.15.
+>>>>>>> origin/Authentication
 
 ## Development server
 

@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
 import { Navbar } from './components/navbar/navbar';
 import { Footer } from './shared/footer/footer';
 
@@ -8,6 +9,7 @@ import { Footer } from './shared/footer/footer';
   imports: [RouterOutlet, Navbar, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css'
+
 })
 export class App {
   protected readonly title = signal('Maw3ed');
