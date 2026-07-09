@@ -42,8 +42,7 @@ export type Gender = 'Male' | 'Female';
 
 export interface UserProfile {
   id: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
   phoneNumber: string | null;
   birthDate: string | null;

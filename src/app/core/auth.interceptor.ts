@@ -1,27 +1,25 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-
-const TOKEN_KEY = 'token'; 
+import { AuthService } from './services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
   const platformId = inject(PLATFORM_ID);
 
-  // 1. نتحقق أولاً هل الكود يعمل في المتصفح أم على السيرفر؟
-  if (isPlatformBrowser(platformId)) {
-    const token = localStorage.getItem(TOKEN_KEY);
-
-    // 2. إذا وجدنا التوكن، نقوم بعمل clone للطلب ونضيف الهيدر
-    if (token) {
-      const cloned = req.clone({
-        setHeaders: { 
-          Authorization: `Bearer ${token}` 
-        },
-      });
-      return next(cloned);
-    }
+  if (!isPlatformBrowser(platformId)) {
+    return next(req);
   }
 
-  // 3. إذا كنا على السيرفر، أو لم يكن هناك توكن في المتصفح، يمر الطلب كما هو
+  const token = authService.getAccessToken();
+  console.log('🔍 Token value:', token ? token.substring(0, 20) + '...' : token);
+
+  if (token) {
+    req = req.clone({
+      setHeaders: { Authorization: `Bearer ${token}` }
+    });
+  }
+
+  // ⚠️ مؤقتًا: مفيش auto-refresh ولا auto-logout لحد ما نتأكد من مسار الـ refresh endpoint الصح
   return next(req);
 };

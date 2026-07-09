@@ -18,12 +18,12 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
             <div class="space-y-1.5">
               <label class="font-bold text-gray-600 block">الاسم الأول</label>
-              <input type="text" [(ngModel)]="user.firstName" class="w-full border border-gray-200 rounded-xl py-2.5 px-4 text-right focus:outline-none focus:border-[#00E5FF]">
+              <input type="text" [(ngModel)]="user.fullName" class="w-full border border-gray-200 rounded-xl py-2.5 px-4 text-right focus:outline-none focus:border-[#00E5FF]">
             </div>
 
             <div class="space-y-1.5">
               <label class="font-bold text-gray-600 block">الاسم الأخير</label>
-              <input type="text" [(ngModel)]="user.lastName" class="w-full border border-gray-200 rounded-xl py-2.5 px-4 text-right focus:outline-none focus:border-[#00E5FF]">
+              <input type="text" [(ngModel)]="user.fullName" class="w-full border border-gray-200 rounded-xl py-2.5 px-4 text-right focus:outline-none focus:border-[#00E5FF]">
             </div>
 
             <div class="space-y-1.5">
@@ -76,7 +76,7 @@
           </div>
           
           <div>
-            <h4 class="font-bold text-gray-800 text-base">{{ user.firstName }} {{ user.lastName }}</h4>
+            <h4 class="font-bold text-gray-800 text-base">{{ user.fullName }} </h4>
             <p class="text-[11px] text-purple-600 font-bold mt-0.5">{{ doc.departmentName }}</p>
             <span class="text-[10px] text-gray-400 block mt-1">{{ doc.address }}</span>
           </div>

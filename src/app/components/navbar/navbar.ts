@@ -39,10 +39,8 @@ export class Navbar {
 
 onLogout(): void {
   this.isMenuOpen = false;
-  this.authService.logout().subscribe({
-    next: () => this.finishLogout(),
-    error: () => this.finishLogout(), // حتى لو فشل الـ API، امسحي محليًا وطلعي على طول
-  });
+  this.authService.logout();
+  this.finishLogout();
 }
 
 private finishLogout(): void {

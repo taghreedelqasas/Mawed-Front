@@ -27,8 +27,7 @@ export class DocProfile implements OnInit {
     if (user && doc) {
       // استدعاء الـ update الحقيقي من الـ Service لكل جزء
       this.appointmentService.updateUserProfile({
-        firstName: user.firstName,
-        lastName: user.lastName,
+        firstName: user.fullName,
         phoneNumber: user.phoneNumber ?? undefined,
         birthDate: user.birthDate ?? undefined,
         gender: user.gender ?? undefined

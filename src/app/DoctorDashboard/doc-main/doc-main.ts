@@ -12,9 +12,10 @@ import { AppointmentService } from '../services/appointment';
 export class DocMain implements OnInit {
   protected dashService = inject(AppointmentService);
 
-  ngOnInit(): void {
-    this.dashService.loadDashboardData();     // المواعيد + التقييمات — حقيقي
-    this.dashService.getWallet();             // الرصيد — حقيقي
-    this.dashService.getWalletTransactions(); // أساس حساب "دخل الشهر" — حقيقي
-  }
+ngOnInit(): void {
+  this.dashService.getUserProfile();  // ← الإضافة المطلوبة
+  this.dashService.loadDashboardData();
+  this.dashService.getWallet();
+  this.dashService.getWalletTransactions();
+}
 }
