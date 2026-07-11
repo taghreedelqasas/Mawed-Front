@@ -1,13 +1,14 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Chat } from '../../services/chat';
 
 interface ChatMessage {
   role: 'user' | 'ai';
   text: string;
   specialties?: string[];
   attachmentName?: string;
-  attachmentUrl?: string;   // object URL for preview
+  attachmentUrl?: string;
   attachmentIsImage?: boolean;
 }
 
@@ -41,6 +42,8 @@ export class NabdAi {
     { title: 'اسم المحادثة' }
   ];
 
+  constructor(private chatService: Chat) {}
+
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -53,7 +56,7 @@ export class NabdAi {
         this.selectedFilePreviewUrl.set(null);
       }
     }
-    input.value = ''; // allows re-selecting the same file later
+    input.value = '';
   }
 
   removeSelectedFile() {
@@ -67,10 +70,7 @@ export class NabdAi {
 
     if (!messageText && !file) return;
 
-    const newMessage: ChatMessage = {
-      role: 'user',
-      text: messageText
-    };
+    const newMessage: ChatMessage = { role: 'user', text: messageText };
 
     if (file) {
       const isImage = file.type.startsWith('image/');
@@ -82,16 +82,37 @@ export class NabdAi {
     }
 
     this.messages.update(msgs => [...msgs, newMessage]);
-
     this.inputText.set('');
     this.selectedFile.set(null);
     this.selectedFilePreviewUrl.set(null);
 
-    // TODO: replace with real API call to your ChatService/MedicalImageService endpoint
+    if (file) {
+      const isImage = file.type.startsWith('image/');
+      const request$ = isImage
+        ? this.chatService.analyzeImage(file)
+        : this.chatService.analyzePdf(file);
+
+      request$.subscribe({
+        next: (res) => {
+          this.messages.update(msgs => [...msgs, { role: 'ai', text: res.explanation }]);
+        },
+        error: (err) => this.handleChatError(err)
+      });
+    } else {
+      this.chatService.sendMessage(messageText).subscribe({
+        next: (res) => {
+          this.messages.update(msgs => [...msgs, { role: 'ai', text: res.reply }]);
+        },
+        error: (err) => this.handleChatError(err)
+      });
+    }
+  }
+
+  private handleChatError(err: any) {
+    console.error('Chat API error:', err);
     this.messages.update(msgs => [...msgs, {
       role: 'ai',
-      text: 'بناءً على الأعراض ووصفتها (صداع مستمر، زغللة في العين، ألم في الرقبة)، قد يكون هذا مرتبطاً بعدة أسباب مثل إجهاد العين، ارتفاع ضغط الدم، أو التوتر العضلي.',
-      specialties: ['طب الأعصاب', 'طب العيون']
+      text: 'حدث خطأ أثناء الاتصال بالمساعد الذكي. حاول مرة أخرى.'
     }]);
   }
 
